@@ -483,6 +483,8 @@ services:
     ports:
       - 127.0.0.1:9090:9090
     restart: on-failure
+    depends_on:
+    - cadvisor
     networks:
       mynetwork:
         ipv4_address: 172.20.0.253
@@ -509,3 +511,27 @@ services:
     networks:
       mynetwork:
         ipv4_address: 172.20.0.252
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    #ports:
+    #  - 8080:8080
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    depends_on:
+      - redis
+    networks:
+      mynetwork:
+        ipv4_address: 172.20.0.252
+  redis:
+    image: redis:latest
+    container_name: redis
+    #ports:
+    #  - 6379:6379
+    networks:
+      mynetwork:
+        ipv4_address: 172.20.0.251

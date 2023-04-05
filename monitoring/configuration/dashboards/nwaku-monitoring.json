@@ -1933,6 +1933,7 @@
         "type": "prometheus",
         "uid": "PBFA97CFB590B2093"
       },
+      "description": "Careful with this when using more than one topic, as all values will be added in \"other\" unless nimlibp2p is compiled with the appropriate flags",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1981,8 +1982,7 @@
                 "value": 80
               }
             ]
-          },
-          "unit": "bytes"
+          }
         },
         "overrides": []
       },
@@ -1992,7 +1992,7 @@
         "x": 11,
         "y": 73
       },
-      "id": 48,
+      "id": 59,
       "options": {
         "legend": {
           "calcs": [],
@@ -2012,46 +2012,13 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "container_memory_usage_bytes",
-          "legendFormat": "{{container_label_com_docker_compose_service}}",
+          "expr": "libp2p_gossipsub_peers_per_topic_mesh",
+          "legendFormat": "{{instance}}_topic_{{topic}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Container Mem Usage",
-      "transformations": [
-        {
-          "id": "filterFieldsByName",
-          "options": {
-            "include": {
-              "names": [
-                "Time",
-                "nwaku-14",
-                "nwaku-7",
-                "nwaku-13",
-                "nwaku-15",
-                "nwaku-20",
-                "nwaku-16",
-                "nwaku-8",
-                "nwaku-3",
-                "nwaku-10",
-                "bootstrap",
-                "nwaku-1",
-                "nwaku-17",
-                "nwaku-6",
-                "nwaku-9",
-                "nwaku-5",
-                "nwaku-11",
-                "nwaku-19",
-                "nwaku-2",
-                "nwaku-18",
-                "nwaku-12",
-                "nwaku-4"
-              ]
-            }
-          }
-        }
-      ],
+      "title": "Peers Per Topic Mesh",
       "type": "timeseries"
     },
     {
@@ -2155,12 +2122,37 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
           },
           "custom": {
-            "align": "auto",
-            "displayMode": "auto",
-            "inspect": false
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
           "mappings": [],
           "thresholds": {
@@ -2175,7 +2167,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "bytes"
         },
         "overrides": []
       },
@@ -2185,18 +2178,19 @@
         "x": 11,
         "y": 81
       },
-      "id": 2,
+      "id": 48,
       "options": {
-        "footer": {
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
         },
-        "showHeader": true
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
-      "pluginVersion": "9.3.6",
       "targets": [
         {
           "datasource": {
@@ -2204,29 +2198,47 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "exemplar": false,
-          "expr": "waku_version",
-          "format": "table",
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
+          "expr": "container_memory_usage_bytes",
+          "legendFormat": "{{container_label_com_docker_compose_service}}",
+          "range": true,
           "refId": "A"
         }
       ],
-      "title": "Version",
+      "title": "Container Mem Usage",
       "transformations": [
         {
           "id": "filterFieldsByName",
           "options": {
             "include": {
               "names": [
-                "version"
+                "Time",
+                "nwaku-14",
+                "nwaku-7",
+                "nwaku-13",
+                "nwaku-15",
+                "nwaku-20",
+                "nwaku-16",
+                "nwaku-8",
+                "nwaku-3",
+                "nwaku-10",
+                "bootstrap",
+                "nwaku-1",
+                "nwaku-17",
+                "nwaku-6",
+                "nwaku-9",
+                "nwaku-5",
+                "nwaku-11",
+                "nwaku-19",
+                "nwaku-2",
+                "nwaku-18",
+                "nwaku-12",
+                "nwaku-4"
               ]
             }
           }
         }
       ],
-      "type": "table"
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -2352,6 +2364,87 @@
         }
       ],
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 10,
+        "x": 11,
+        "y": 89
+      },
+      "id": 2,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "waku_version",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Version",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "version"
+              ]
+            }
+          }
+        }
+      ],
+      "type": "table"
     }
   ],
   "refresh": "10s",
@@ -2362,7 +2455,7 @@
     "list": [
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "nwaku-4:8008",
           "value": "nwaku-4:8008"
         },

@@ -3,28 +3,14 @@ version: "3.7"
 networks:
   mynetwork:
     ipam:
+      driver: macvlan
       config:
-        - subnet: 172.20.0.0/24
+        - subnet: 192.155.0.0/24
 services:
-
-  traffic:
-    image: "waku-publisher:latest"
-    build:
-      context: ../waku-publisher
-      dockerfile: Dockerfile
-    command:
-      - --pubsub-topic="my-ptopic" # unused
-      - --content-topic="my-ctopic" # unused
-      - --msg-per-second=100
-      - --msg-size-kb=2
-      - --bootstrap-node=${BOOTSTRAP_ENR}
-    networks:
-      mynetwork:
-        ipv4_address: 172.20.0.249
-        
   bootstrap:
     image: ${NWAKU_IMAGE}
     restart: on-failure
+    dns: 8.8.8.8
     # TODO: expose some ports to inject traffic
     ports:
       - 127.0.0.1:60000:60000
@@ -33,500 +19,63 @@ services:
       - 127.0.0.1:8545:8545
     command:
       - --relay=true
-      - --rpc=true
       - --rpc-admin=true
       - --keep-alive=true
       - --max-connections=150
       - --dns-discovery=true
       - --discv5-discovery=true
       - --discv5-enr-auto-update=True
-      - --log-level=DEBUG
+      - --log-level=INFO
       - --rpc-address=0.0.0.0
       - --metrics-server=True
       - --metrics-server-address=0.0.0.0
       - --nodekey=30348dd51465150e04a5d9d932c72864c8967f806cce60b5d26afeca1e77eb68
-      - --nat=extip:172.20.0.254
+      - --nat=extip:192.155.0.200
     networks:
       mynetwork:
-        ipv4_address: 172.20.0.254
+        ipv4_address: 192.155.0.200
 
 
-  nwaku-1:
-    image: ${NWAKU_IMAGE}
-    restart: on-failure
-    command:
-      - --relay=true
-      - --rpc-admin=true
-      - --keep-alive=true
-      - --max-connections=150
-      - --dns-discovery=true
-      - --discv5-discovery=true
-      - --discv5-enr-auto-update=True
-      - --log-level=DEBUG
-      - --rpc-address=0.0.0.0
-      - --metrics-server=True
-      - --metrics-server-address=0.0.0.0
-      - --discv5-bootstrap-node=${BOOTSTRAP_ENR}
-      - --nat=extip:172.20.0.2
-    networks:
-      mynetwork:
-        ipv4_address: 172.20.0.2
-
-
-  nwaku-2:
-    image: ${NWAKU_IMAGE}
-    restart: on-failure
-    command:
-      - --relay=true
-      - --rpc-admin=true
-      - --keep-alive=true
-      - --max-connections=150
-      - --dns-discovery=true
-      - --discv5-discovery=true
-      - --discv5-enr-auto-update=True
-      - --log-level=DEBUG
-      - --rpc-address=0.0.0.0
-      - --metrics-server=True
-      - --metrics-server-address=0.0.0.0
-      - --discv5-bootstrap-node=${BOOTSTRAP_ENR}
-      - --nat=extip:172.20.0.3
-    networks:
-      mynetwork:
-        ipv4_address: 172.20.0.3
-
-
-  nwaku-3:
-    image: ${NWAKU_IMAGE}
-    restart: on-failure
-    command:
-      - --relay=true
-      - --rpc-admin=true
-      - --keep-alive=true
-      - --max-connections=150
-      - --dns-discovery=true
-      - --discv5-discovery=true
-      - --discv5-enr-auto-update=True
-      - --log-level=DEBUG
-      - --rpc-address=0.0.0.0
-      - --metrics-server=True
-      - --metrics-server-address=0.0.0.0
-      - --discv5-bootstrap-node=${BOOTSTRAP_ENR}
-      - --nat=extip:172.20.0.4
-    networks:
-      mynetwork:
-        ipv4_address: 172.20.0.4
-
-
-  nwaku-4:
-    image: ${NWAKU_IMAGE}
-    restart: on-failure
-    command:
-      - --relay=true
-      - --rpc-admin=true
-      - --keep-alive=true
-      - --max-connections=150
-      - --dns-discovery=true
-      - --discv5-discovery=true
-      - --discv5-enr-auto-update=True
-      - --log-level=DEBUG
-      - --rpc-address=0.0.0.0
-      - --metrics-server=True
-      - --metrics-server-address=0.0.0.0
-      - --discv5-bootstrap-node=${BOOTSTRAP_ENR}
-      - --nat=extip:172.20.0.5
-    networks:
-      mynetwork:
-        ipv4_address: 172.20.0.5
-
-
-  nwaku-5:
-    image: ${NWAKU_IMAGE}
-    restart: on-failure
-    command:
-      - --relay=true
-      - --rpc-admin=true
-      - --keep-alive=true
-      - --max-connections=150
-      - --dns-discovery=true
-      - --discv5-discovery=true
-      - --discv5-enr-auto-update=True
-      - --log-level=DEBUG
-      - --rpc-address=0.0.0.0
-      - --metrics-server=True
-      - --metrics-server-address=0.0.0.0
-      - --discv5-bootstrap-node=${BOOTSTRAP_ENR}
-      - --nat=extip:172.20.0.6
-    networks:
-      mynetwork:
-        ipv4_address: 172.20.0.6
-
-
-  nwaku-6:
-    image: ${NWAKU_IMAGE}
-    restart: on-failure
-    command:
-      - --relay=true
-      - --rpc-admin=true
-      - --keep-alive=true
-      - --max-connections=150
-      - --dns-discovery=true
-      - --discv5-discovery=true
-      - --discv5-enr-auto-update=True
-      - --log-level=DEBUG
-      - --rpc-address=0.0.0.0
-      - --metrics-server=True
-      - --metrics-server-address=0.0.0.0
-      - --discv5-bootstrap-node=${BOOTSTRAP_ENR}
-      - --nat=extip:172.20.0.7
-    networks:
-      mynetwork:
-        ipv4_address: 172.20.0.7
-
-
-  nwaku-7:
-    image: ${NWAKU_IMAGE}
-    restart: on-failure
-    command:
-      - --relay=true
-      - --rpc-admin=true
-      - --keep-alive=true
-      - --max-connections=150
-      - --dns-discovery=true
-      - --discv5-discovery=true
-      - --discv5-enr-auto-update=True
-      - --log-level=DEBUG
-      - --rpc-address=0.0.0.0
-      - --metrics-server=True
-      - --metrics-server-address=0.0.0.0
-      - --discv5-bootstrap-node=${BOOTSTRAP_ENR}
-      - --nat=extip:172.20.0.8
-    networks:
-      mynetwork:
-        ipv4_address: 172.20.0.8
-
-
-  nwaku-8:
-    image: ${NWAKU_IMAGE}
-    restart: on-failure
-    command:
-      - --relay=true
-      - --rpc-admin=true
-      - --keep-alive=true
-      - --max-connections=150
-      - --dns-discovery=true
-      - --discv5-discovery=true
-      - --discv5-enr-auto-update=True
-      - --log-level=DEBUG
-      - --rpc-address=0.0.0.0
-      - --metrics-server=True
-      - --metrics-server-address=0.0.0.0
-      - --discv5-bootstrap-node=${BOOTSTRAP_ENR}
-      - --nat=extip:172.20.0.9
-    networks:
-      mynetwork:
-        ipv4_address: 172.20.0.9
-
-
-  nwaku-9:
-    image: ${NWAKU_IMAGE}
-    restart: on-failure
-    command:
-      - --relay=true
-      - --rpc-admin=true
-      - --keep-alive=true
-      - --max-connections=150
-      - --dns-discovery=true
-      - --discv5-discovery=true
-      - --discv5-enr-auto-update=True
-      - --log-level=DEBUG
-      - --rpc-address=0.0.0.0
-      - --metrics-server=True
-      - --metrics-server-address=0.0.0.0
-      - --discv5-bootstrap-node=${BOOTSTRAP_ENR}
-      - --nat=extip:172.20.0.10
-    networks:
-      mynetwork:
-        ipv4_address: 172.20.0.10
-
-
-  nwaku-10:
-    image: ${NWAKU_IMAGE}
-    restart: on-failure
-    command:
-      - --relay=true
-      - --rpc-admin=true
-      - --keep-alive=true
-      - --max-connections=150
-      - --dns-discovery=true
-      - --discv5-discovery=true
-      - --discv5-enr-auto-update=True
-      - --log-level=DEBUG
-      - --rpc-address=0.0.0.0
-      - --metrics-server=True
-      - --metrics-server-address=0.0.0.0
-      - --discv5-bootstrap-node=${BOOTSTRAP_ENR}
-      - --nat=extip:172.20.0.11
-    networks:
-      mynetwork:
-        ipv4_address: 172.20.0.11
-
-
-  nwaku-11:
-    image: ${NWAKU_IMAGE}
-    restart: on-failure
-    command:
-      - --relay=true
-      - --rpc-admin=true
-      - --keep-alive=true
-      - --max-connections=150
-      - --dns-discovery=true
-      - --discv5-discovery=true
-      - --discv5-enr-auto-update=True
-      - --log-level=DEBUG
-      - --rpc-address=0.0.0.0
-      - --metrics-server=True
-      - --metrics-server-address=0.0.0.0
-      - --discv5-bootstrap-node=${BOOTSTRAP_ENR}
-      - --nat=extip:172.20.0.12
-    networks:
-      mynetwork:
-        ipv4_address: 172.20.0.12
-
-
-  nwaku-12:
-    image: ${NWAKU_IMAGE}
-    restart: on-failure
-    command:
-      - --relay=true
-      - --rpc-admin=true
-      - --keep-alive=true
-      - --max-connections=150
-      - --dns-discovery=true
-      - --discv5-discovery=true
-      - --discv5-enr-auto-update=True
-      - --log-level=DEBUG
-      - --rpc-address=0.0.0.0
-      - --metrics-server=True
-      - --metrics-server-address=0.0.0.0
-      - --discv5-bootstrap-node=${BOOTSTRAP_ENR}
-      - --nat=extip:172.20.0.13
-    networks:
-      mynetwork:
-        ipv4_address: 172.20.0.13
-
-
-  nwaku-13:
-    image: ${NWAKU_IMAGE}
-    restart: on-failure
-    command:
-      - --relay=true
-      - --rpc-admin=true
-      - --keep-alive=true
-      - --max-connections=150
-      - --dns-discovery=true
-      - --discv5-discovery=true
-      - --discv5-enr-auto-update=True
-      - --log-level=DEBUG
-      - --rpc-address=0.0.0.0
-      - --metrics-server=True
-      - --metrics-server-address=0.0.0.0
-      - --discv5-bootstrap-node=${BOOTSTRAP_ENR}
-      - --nat=extip:172.20.0.14
-    networks:
-      mynetwork:
-        ipv4_address: 172.20.0.14
-
-
-  nwaku-14:
-    image: ${NWAKU_IMAGE}
-    restart: on-failure
-    command:
-      - --relay=true
-      - --rpc-admin=true
-      - --keep-alive=true
-      - --max-connections=150
-      - --dns-discovery=true
-      - --discv5-discovery=true
-      - --discv5-enr-auto-update=True
-      - --log-level=DEBUG
-      - --rpc-address=0.0.0.0
-      - --metrics-server=True
-      - --metrics-server-address=0.0.0.0
-      - --discv5-bootstrap-node=${BOOTSTRAP_ENR}
-      - --nat=extip:172.20.0.15
-    networks:
-      mynetwork:
-        ipv4_address: 172.20.0.15
-
-
-  nwaku-15:
-    image: ${NWAKU_IMAGE}
-    restart: on-failure
-    command:
-      - --relay=true
-      - --rpc-admin=true
-      - --keep-alive=true
-      - --max-connections=150
-      - --dns-discovery=true
-      - --discv5-discovery=true
-      - --discv5-enr-auto-update=True
-      - --log-level=DEBUG
-      - --rpc-address=0.0.0.0
-      - --metrics-server=True
-      - --metrics-server-address=0.0.0.0
-      - --discv5-bootstrap-node=${BOOTSTRAP_ENR}
-      - --nat=extip:172.20.0.16
-    networks:
-      mynetwork:
-        ipv4_address: 172.20.0.16
-
-
-  nwaku-16:
-    image: ${NWAKU_IMAGE}
-    restart: on-failure
-    command:
-      - --relay=true
-      - --rpc-admin=true
-      - --keep-alive=true
-      - --max-connections=150
-      - --dns-discovery=true
-      - --discv5-discovery=true
-      - --discv5-enr-auto-update=True
-      - --log-level=DEBUG
-      - --rpc-address=0.0.0.0
-      - --metrics-server=True
-      - --metrics-server-address=0.0.0.0
-      - --discv5-bootstrap-node=${BOOTSTRAP_ENR}
-      - --nat=extip:172.20.0.17
-    networks:
-      mynetwork:
-        ipv4_address: 172.20.0.17
-
-
-  nwaku-17:
-    image: ${NWAKU_IMAGE}
-    restart: on-failure
-    command:
-      - --relay=true
-      - --rpc-admin=true
-      - --keep-alive=true
-      - --max-connections=150
-      - --dns-discovery=true
-      - --discv5-discovery=true
-      - --discv5-enr-auto-update=True
-      - --log-level=DEBUG
-      - --rpc-address=0.0.0.0
-      - --metrics-server=True
-      - --metrics-server-address=0.0.0.0
-      - --discv5-bootstrap-node=${BOOTSTRAP_ENR}
-      - --nat=extip:172.20.0.18
-    networks:
-      mynetwork:
-        ipv4_address: 172.20.0.18
-
-
-  nwaku-18:
-    image: ${NWAKU_IMAGE}
-    restart: on-failure
-    command:
-      - --relay=true
-      - --rpc-admin=true
-      - --keep-alive=true
-      - --max-connections=150
-      - --dns-discovery=true
-      - --discv5-discovery=true
-      - --discv5-enr-auto-update=True
-      - --log-level=DEBUG
-      - --rpc-address=0.0.0.0
-      - --metrics-server=True
-      - --metrics-server-address=0.0.0.0
-      - --discv5-bootstrap-node=${BOOTSTRAP_ENR}
-      - --nat=extip:172.20.0.19
-    networks:
-      mynetwork:
-        ipv4_address: 172.20.0.19
-
-
-  nwaku-19:
-    image: ${NWAKU_IMAGE}
-    restart: on-failure
-    command:
-      - --relay=true
-      - --rpc-admin=true
-      - --keep-alive=true
-      - --max-connections=150
-      - --dns-discovery=true
-      - --discv5-discovery=true
-      - --discv5-enr-auto-update=True
-      - --log-level=DEBUG
-      - --rpc-address=0.0.0.0
-      - --metrics-server=True
-      - --metrics-server-address=0.0.0.0
-      - --discv5-bootstrap-node=${BOOTSTRAP_ENR}
-      - --nat=extip:172.20.0.20
-    networks:
-      mynetwork:
-        ipv4_address: 172.20.0.20
-
-
-  nwaku-20:
-    image: ${NWAKU_IMAGE}
-    restart: on-failure
-    command:
-      - --relay=true
-      - --rpc-admin=true
-      - --keep-alive=true
-      - --max-connections=150
-      - --dns-discovery=true
-      - --discv5-discovery=true
-      - --discv5-enr-auto-update=True
-      - --log-level=DEBUG
-      - --rpc-address=0.0.0.0
-      - --metrics-server=True
-      - --metrics-server-address=0.0.0.0
-      - --discv5-bootstrap-node=${BOOTSTRAP_ENR}
-      - --nat=extip:172.20.0.21
-    networks:
-      mynetwork:
-        ipv4_address: 172.20.0.21
   
   prometheus:
     image: prom/prometheus:latest
     volumes:
-      - ./monitoring/prometheus-config.yml:/etc/prometheus/prometheus.yml
+      - ./monitoring/prometheus-config.yml:/etc/prometheus/prometheus.yml:z
     command:
       - --config.file=/etc/prometheus/prometheus.yml
     ports:
       - 127.0.0.1:9090:9090
     restart: on-failure
-    depends_on:
-    - cadvisor
+    dns: 8.8.8.8
+    #depends_on:
+    #- cadvisor
     networks:
       mynetwork:
-        ipv4_address: 172.20.0.253
+        ipv4_address: 192.155.0.253
 
   grafana:
     image: grafana/grafana:latest
     env_file:
       - ./monitoring/configuration/grafana-plugins.env
     volumes:
-      - ./monitoring/configuration/grafana.ini:/etc/grafana/grafana.ini
-      - ./monitoring/configuration/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
-      - ./monitoring/configuration/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
-      - ./monitoring/configuration/dashboards:/var/lib/grafana/dashboards/
-      - ./monitoring/configuration/customizations/custom-logo.svg:/usr/share/grafana/public/img/grafana_icon.svg
-      - ./monitoring/configuration/customizations/custom-logo.svg:/usr/share/grafana/public/img/grafana_typelogo.svg
-      - ./monitoring/configuration/customizations/custom-logo.png:/usr/share/grafana/public/img/fav32.png
+      - ./monitoring/configuration/grafana.ini:/etc/grafana/grafana.ini:z
+      - ./monitoring/configuration/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml:z
+      - ./monitoring/configuration/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml:z
+      - ./monitoring/configuration/dashboards:/var/lib/grafana/dashboards/:z
+      - ./monitoring/configuration/customizations/custom-logo.svg:/usr/share/grafana/public/img/grafana_icon.svg:z
+      - ./monitoring/configuration/customizations/custom-logo.svg:/usr/share/grafana/public/img/grafana_typelogo.svg:z
+      - ./monitoring/configuration/customizations/custom-logo.png:/usr/share/grafana/public/img/fav32.png:z
     ports:
       #- 127.0.0.1:3000:3000
       # open port to access the dashboard
       - 3000:3000
     restart: on-failure
+    dns: 8.8.8.8
     depends_on:
       - prometheus
     networks:
       mynetwork:
-        ipv4_address: 172.20.0.252
+        ipv4_address: 192.155.0.252
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
@@ -534,15 +83,15 @@ services:
     #ports:
     #  - 8080:8080
     volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:rw
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
+      - /:/rootfs:ro,z
+      - /var/run:/var/run:rw,z
+      - /sys:/sys:ro,z
+      - /var/lib/docker/:/var/lib/docker:ro,z
     depends_on:
       - redis
     networks:
       mynetwork:
-        ipv4_address: 172.20.0.251
+        ipv4_address: 192.155.0.251
   redis:
     image: redis:latest
     container_name: redis
@@ -550,4 +99,4 @@ services:
     #  - 6379:6379
     networks:
       mynetwork:
-        ipv4_address: 172.20.0.250
+        ipv4_address: 192.155.0.250

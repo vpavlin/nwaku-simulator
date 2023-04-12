@@ -6,6 +6,22 @@ networks:
       config:
         - subnet: 172.20.0.0/24
 services:
+
+  traffic:
+    image: "waku-publisher:latest"
+    build:
+      context: ../waku-publisher
+      dockerfile: Dockerfile
+    command:
+      - --pubsub-topic="my-ptopic" # unused
+      - --content-topic="my-ctopic" # unused
+      - --msg-per-second=100
+      - --msg-size-kb=2
+      - --bootstrap-node=${BOOTSTRAP_ENR}
+    networks:
+      mynetwork:
+        ipv4_address: 172.20.0.249
+        
   bootstrap:
     image: ${NWAKU_IMAGE}
     restart: on-failure

@@ -1,27 +1,6 @@
 version: "3.7"
 
-networks:
-  mynetwork:
-    ipam:
-      config:
-        - subnet: 172.20.0.0/24
 services:
-
-  traffic:
-    image: "waku-publisher:latest"
-    build:
-      context: ../waku-publisher
-      dockerfile: Dockerfile
-    command:
-      - --pubsub-topic="my-ptopic" # unused
-      - --content-topic="my-ctopic" # unused
-      - --msg-per-second=100
-      - --msg-size-kb=2
-      - --bootstrap-node=${BOOTSTRAP_ENR}
-    networks:
-      mynetwork:
-        ipv4_address: 172.20.0.249
-        
   bootstrap:
     image: ${NWAKU_IMAGE}
     restart: on-failure
@@ -31,67 +10,36 @@ services:
       - 127.0.0.1:8008:8008
       - 127.0.0.1:9000:9000
       - 127.0.0.1:8545:8545
-    command:
-      - --relay=true
-      - --rpc-admin=true
-      - --keep-alive=true
-      - --max-connections=150
-      - --dns-discovery=true
-      - --discv5-discovery=true
-      - --discv5-enr-auto-update=True
-      - --log-level=INFO
-      - --rpc-address=0.0.0.0
-      - --metrics-server=True
-      - --metrics-server-address=0.0.0.0
-      - --nodekey=30348dd51465150e04a5d9d932c72864c8967f806cce60b5d26afeca1e77eb68
-      - --nat=extip:172.20.0.254
-    networks:
-      mynetwork:
-        ipv4_address: 172.20.0.254
-
-
-  nwaku-1:
-    image: ${NWAKU_IMAGE}
-    restart: on-failure
-    deploy:
-      replicas: 100
     entrypoint: sh
-    command: 
+    command:
     - '/opt/runnode.sh'
     volumes:
       - ./runnode.sh:/opt/runnode.sh:Z
     environment:
-      - BOOTSTRAP_ENR=${BOOTSTRAP_ENR}
-    networks:
-      mynetwork:
-        
+      BOOTSTRAP_NODE: "true"
+
   prometheus:
     image: prom/prometheus:latest
     volumes:
-      - ./monitoring/prometheus-config.yml:/etc/prometheus/prometheus.yml
+      - ./monitoring/prometheus-config.yml:/etc/prometheus/prometheus.yml:z
     command:
       - --config.file=/etc/prometheus/prometheus.yml
     ports:
       - 127.0.0.1:9090:9090
     restart: on-failure
-    depends_on:
-    - cadvisor
-    networks:
-      mynetwork:
-        ipv4_address: 172.20.0.253
 
   grafana:
     image: grafana/grafana:latest
     env_file:
       - ./monitoring/configuration/grafana-plugins.env
     volumes:
-      - ./monitoring/configuration/grafana.ini:/etc/grafana/grafana.ini
-      - ./monitoring/configuration/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
-      - ./monitoring/configuration/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
-      - ./monitoring/configuration/dashboards:/var/lib/grafana/dashboards/
-      - ./monitoring/configuration/customizations/custom-logo.svg:/usr/share/grafana/public/img/grafana_icon.svg
-      - ./monitoring/configuration/customizations/custom-logo.svg:/usr/share/grafana/public/img/grafana_typelogo.svg
-      - ./monitoring/configuration/customizations/custom-logo.png:/usr/share/grafana/public/img/fav32.png
+      - ./monitoring/configuration/grafana.ini:/etc/grafana/grafana.ini:z
+      - ./monitoring/configuration/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml:z
+      - ./monitoring/configuration/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml:z
+      - ./monitoring/configuration/dashboards:/var/lib/grafana/dashboards/:z
+      - ./monitoring/configuration/customizations/custom-logo.svg:/usr/share/grafana/public/img/grafana_icon.svg:z
+      - ./monitoring/configuration/customizations/custom-logo.svg:/usr/share/grafana/public/img/grafana_typelogo.svg:z
+      - ./monitoring/configuration/customizations/custom-logo.png:/usr/share/grafana/public/img/fav32.png:z
     ports:
       #- 127.0.0.1:3000:3000
       # open port to access the dashboard
@@ -99,30 +47,23 @@ services:
     restart: on-failure
     depends_on:
       - prometheus
-    networks:
-      mynetwork:
-        ipv4_address: 172.20.0.252
 
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor:latest
-    container_name: cadvisor
-    #ports:
-    #  - 8080:8080
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:rw
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-    depends_on:
-      - redis
-    networks:
-      mynetwork:
-        ipv4_address: 172.20.0.251
   redis:
     image: redis:latest
     container_name: redis
     #ports:
     #  - 6379:6379
-    networks:
-      mynetwork:
-        ipv4_address: 172.20.0.250
+
+
+  nwaku-1:
+    image: ${NWAKU_IMAGE}
+    restart: on-failure
+    deploy:
+      replicas: 5
+    entrypoint: sh
+    command:
+      - '/opt/runnode.sh'
+    volumes:
+      - ./runnode.sh:/opt/runnode.sh:Z
+    depends_on:
+      - bootstrap

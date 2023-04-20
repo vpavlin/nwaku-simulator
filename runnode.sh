@@ -2,6 +2,26 @@
 
 IP=$(ip a | grep "inet " | grep -Fv 127.0.0.1 | sed 's/.*inet \([^/]*\).*/\1/')
 
+if [ -n "${TRAFFIC_GENERATOR}" ]; then
+  echo "I am the traffic generator"
+  RETRIES_TRAFFIC=${RETRIES_TRAFFIC:=10}
+
+  while [ -z "${NODE_ENR}" ] && [ ${RETRIES_TRAFFIC} -ge 0 ]; do
+    # the node can be bootstrap:8545 or other
+    # use other to simualte gossip, eg:
+    NODE_ENR=$(wget -O - --post-data='{"jsonrpc":"2.0","method":"get_waku_v2_debug_v1_info","params":[],"id":1}' --header='Content-Type:application/json' http://nwaku-simulator_nwaku_3:8545/ 2> /dev/null | sed 's/.*"enrUri":"\([^"]*\)".*/\1/');
+    echo "Bootstrap node not ready, retrying (retries left: ${RETRIES_TRAFFIC})"
+    sleep 1
+    RETRIES_TRAFFIC=$(( $RETRIES_TRAFFIC - 1 ))
+  done
+  exec /main\
+      --pubsub-topic="my-ptopic"\
+      --content-topic="my-ctopic"\
+      --msg-per-second=100\
+      --msg-size-kb=2\
+      --bootstrap-node=${NODE_ENR}
+fi
+
 if [ -n "${BOOTSTRAP_NODE}" ]; then
   echo "I am a bootstrap node"
 

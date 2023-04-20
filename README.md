@@ -30,3 +30,12 @@ To clean volumes and containers. Careful with this!
 docker rm -f $(docker ps -a -q)
 docker volume rm $(docker volume ls -q)
 ```
+
+
+## warning
+
+in case arp tables are overflowing:
+
+```
+sysctl net.ipv4.neigh.default.gc_thresh3=32000
+```

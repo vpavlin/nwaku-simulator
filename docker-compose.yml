@@ -84,11 +84,13 @@ services:
     image: ${NWAKU_IMAGE}
     restart: on-failure
     deploy:
-      replicas: 5
+      replicas: 80
     entrypoint: sh
     command:
       - '/opt/runnode.sh'
     volumes:
       - ./runnode.sh:/opt/runnode.sh:Z
+      - ./key.pem:/opt/waku/key.pem:Z
+      - ./cert.pem:/opt/waku/cert.pem:Z
     depends_on:
       - bootstrap

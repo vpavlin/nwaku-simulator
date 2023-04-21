@@ -2,34 +2,34 @@ version: "3.7"
 
 services:
 
-  bootstrap:
-    image: ${NWAKU_IMAGE}
-    restart: on-failure
-    # TODO: expose some ports to inject traffic
-    ports:
-      - 127.0.0.1:60000:60000
-      - 127.0.0.1:8008:8008
-      - 127.0.0.1:9000:9000
-      - 127.0.0.1:8545:8545
-    entrypoint: sh
-    command:
-    - '/opt/runnode.sh'
-    volumes:
-      - ./runnode.sh:/opt/runnode.sh:Z
-    environment:
-      BOOTSTRAP_NODE: "true"
+  # bootstrap:
+  #   image: ${NWAKU_IMAGE}
+  #   restart: on-failure
+  #   # TODO: expose some ports to inject traffic
+  #   ports:
+  #     - 127.0.0.1:60000:60000
+  #     - 127.0.0.1:8008:8008
+  #     - 127.0.0.1:9000:9000
+  #     - 127.0.0.1:8545:8545
+  #   entrypoint: sh
+  #   command:
+  #   - '/opt/runnode.sh'
+  #   volumes:
+  #     - ./runnode.sh:/opt/runnode.sh:Z
+  #   environment:
+  #     BOOTSTRAP_NODE: "true"
 
-  traffic:
-    image: "waku-publisher:latest"
-    build:
-      context: ../waku-publisher
-      dockerfile: Dockerfile
-    entrypoint: sh
-      - 'opt/runnode.sh'
-    volumes:
-      - ./runnode.sh:/opt/runnode.sh:Z
-    environment:
-      TRAFFIC_GENERATOR: "true"
+  # traffic:
+  #   image: "waku-publisher:latest"
+  #   build:
+  #     context: ../waku-publisher
+  #     dockerfile: Dockerfile
+  #   entrypoint: sh
+  #     - 'opt/runnode.sh'
+  #   volumes:
+  #     - ./runnode.sh:/opt/runnode.sh:Z
+  #   environment:
+  #     TRAFFIC_GENERATOR: "true"
 
   prometheus:
     image: prom/prometheus:latest
@@ -83,14 +83,20 @@ services:
   nwaku:
     image: ${NWAKU_IMAGE}
     restart: on-failure
-    deploy:
-      replicas: 80
+
     entrypoint: sh
+    ports:
+      - 30303:30303/tcp
+      - 9000:9000/udp
+      - 30304:30304
     command:
       - '/opt/runnode.sh'
     volumes:
       - ./runnode.sh:/opt/runnode.sh:Z
       - ./key.pem:/opt/waku/key.pem:Z
       - ./cert.pem:/opt/waku/cert.pem:Z
-    depends_on:
-      - bootstrap
+      - ./data:/data:Z
+#    depends_on:
+#      - bootstrap
+
+

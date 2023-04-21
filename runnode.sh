@@ -42,7 +42,7 @@ if [ -n "${BOOTSTRAP_NODE}" ]; then
 else
   echo "I am an ordinary nwaku node"
 
-  RETRIES=${RETRIES:=10}
+  RETRIES=${RETRIES:=0}
 
   while [ -z "${BOOTSTRAP_ENR}" ] && [ ${RETRIES} -ge 0 ]; do
     BOOTSTRAP_ENR=$(wget -O - --post-data='{"jsonrpc":"2.0","method":"get_waku_v2_debug_v1_info","params":[],"id":1}' --header='Content-Type:application/json' http://bootstrap:8545/ 2> /dev/null | sed 's/.*"enrUri":"\([^"]*\)".*/\1/');
@@ -51,10 +51,10 @@ else
     RETRIES=$(( $RETRIES - 1 ))
   done
 
-  if [ -z "${BOOTSTRAP_ENR}" ]; then
-     echo "Could not get BOOTSTRAP_ENR and none provided. Failing"
-     exit 1
-  fi
+#  if [ -z "${BOOTSTRAP_ENR}" ]; then
+#     echo "Could not get BOOTSTRAP_ENR and none provided. Failing"
+#     exit 1
+#  fi
 
   echo "Using bootstrap node: ${BOOTSTRAP_ENR}"
 
@@ -84,15 +84,20 @@ else
         --discv5-discovery=true\
         --discv5-udp-port=9000\
         --discv5-enr-auto-update=False\
-        --discv5-bootstrap-node=${BOOTSTRAP_ENR}\
-        --nat=extip:${IP}\
+        --nat=extip:65.21.94.244\
         --log-level=DEBUG\
         --rpc-port=8545\
         --rpc-address=0.0.0.0\
         --tcp-port=30303\
         --metrics-server=True\
-        --metrics-server-address=0.0.0.0
- 
+        --metrics-server-address=0.0.0.0\
+        --dns-discovery=true\
+        --dns-discovery-url=enrtree://AOGECG2SPND25EEFMAJ5WF3KSGJNSGV356DSTL2YVLLZWIV6SAYBM@prod.nodes.status.im\
+        --discv5-bootstrap-node="enr:-P-4QPLMQ1zIYRAs4-F0mYmMxMihSySRtEIuGHJ_Qd_GL8XqUE78hpVUE97rgwlXnxPkzMJHkWyiNq7DT1fdZSy3QcgBgmlkgnY0gmlwhIbRi9KKbXVsdGlhZGRyc7hgAC02KG5vZGUtMDEuZG8tYW1zMy53YWt1djIudGVzdC5zdGF0dXNpbS5uZXQGdl8ALzYobm9kZS0wMS5kby1hbXMzLndha3V2Mi50ZXN0LnN0YXR1c2ltLm5ldAYfQN4DiXNlY3AyNTZrMaEDnr03Tuo77930a7sYLikftxnuG3BbC3gCFhA4632ooDaDdGNwgnZfg3VkcIIjKIV3YWt1Mg8"\
+        --websocket-port=30304
+
+#        --nat=extip:${IP}\
+#        --discv5-bootstrap-node=${BOOTSTRAP_ENR}\
 
 #        --dns-discovery=true\
 #        --dns-discovery-url=enrtree://AOGECG2SPND25EEFMAJ5WF3KSGJNSGV356DSTL2YVLLZWIV6SAYBM@test.waku.nodes.status.im\

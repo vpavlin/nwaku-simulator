@@ -1,0 +1,15 @@
+{
+  "name": "websockets",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "vpavlin",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "@multiformats/multiaddr": "^12.1.2",
+    "@waku/core": "^0.0.16",
+    "@waku/create": "^0.0.12",
+    "@waku/utils": "^0.0.4",
+    "dotenv": "^16.0.3"
+  }
+}

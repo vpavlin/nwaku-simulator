@@ -8,3 +8,4 @@ services:
     image: quay.io/vpavlin0/waku-websockets:latest
     volumes:
       - ./.env.example:/opt/websockets/.env:z
+    

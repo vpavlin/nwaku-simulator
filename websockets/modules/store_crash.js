@@ -1,11 +1,12 @@
 import { createDecoder } from '@waku/core';
 
-
 export const protocols =  ["store", "lightpush"]
 
 export async function execute(node, encoder) {
-    let i = 0;
-    while (true) {
+    const sleep = Math.floor(Math.random() * 5000)
+    console.log(`Sleeping for ${sleep}`)
+    await delay(sleep)
+    for (let i = 0;i < 5; i++) {
         try {
             await node.store.queryOrderedCallback(
                 [createDecoder("/relay-ping/1/ping/null")],
@@ -15,10 +16,11 @@ export async function execute(node, encoder) {
         } catch (e) {
             console.log("Failed to send store query: " + e)
         } finally {
-            await delay(5000);
-            i++;
+            await delay(1000);
         }
     }
+
+    process.exit(1)
 }
 
 const callback = (wakuMessage) => {

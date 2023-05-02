@@ -84,7 +84,7 @@ services:
     image: ${NWAKU_IMAGE}
     restart: on-failure
     deploy:
-      replicas: 5
+      replicas: 25
     entrypoint: sh
     command:
       - '/opt/runnode.sh'

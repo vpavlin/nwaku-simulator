@@ -9,15 +9,15 @@ if [ -n "${TRAFFIC_GENERATOR}" ]; then
   while [ -z "${NODE_ENR}" ] && [ ${RETRIES_TRAFFIC} -ge 0 ]; do
     # the node can be bootstrap:8545 or other
     # use other to simualte gossip, eg:
-    NODE_ENR=$(wget -O - --post-data='{"jsonrpc":"2.0","method":"get_waku_v2_debug_v1_info","params":[],"id":1}' --header='Content-Type:application/json' http://nwaku-simulator_nwaku_3:8545/ 2> /dev/null | sed 's/.*"enrUri":"\([^"]*\)".*/\1/');
-    echo "Bootstrap node not ready, retrying (retries left: ${RETRIES_TRAFFIC})"
+    NODE_ENR=$(wget -O - --post-data='{"jsonrpc":"2.0","method":"get_waku_v2_debug_v1_info","params":[],"id":1}' --header='Content-Type:application/json' http://nwaku-simulator-nwaku-3:8545/ 2> /dev/null | sed 's/.*"enrUri":"\([^"]*\)".*/\1/');
+    echo "Traffic generator node not ready, retrying (retries left: ${RETRIES_TRAFFIC})"
     sleep 1
     RETRIES_TRAFFIC=$(( $RETRIES_TRAFFIC - 1 ))
   done
   exec /main\
       --pubsub-topic="my-ptopic"\
       --content-topic="my-ctopic"\
-      --msg-per-second=100\
+      --msg-per-second=50\
       --msg-size-kb=2\
       --bootstrap-node=${NODE_ENR}
 fi

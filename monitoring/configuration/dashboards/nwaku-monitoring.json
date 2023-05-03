@@ -38,6 +38,312 @@
         "x": 0,
         "y": 0
       },
+      "id": 64,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "# Single Node (Select nwaku-instance)",
+        "mode": "markdown"
+      },
+      "pluginVersion": "9.3.6",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "%"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 10,
+        "x": 0,
+        "y": 2
+      },
+      "id": 61,
+      "options": {
+        "displayMode": "gradient",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "rate(waku_histogram_message_size_bucket{instance=\"[[nwaku_instance]]\"}[1h])/scalar(rate(waku_histogram_message_size_count{instance=\"[[nwaku_instance]]\"}[1h]))*100",
+          "format": "heatmap",
+          "interval": "",
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Message distrubution %/kBytes (Last Hour)",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 11,
+        "x": 10,
+        "y": 2
+      },
+      "id": 66,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "libp2p_open_streams{instance=\"[[nwaku_instance]]\"}",
+          "legendFormat": "{{instance}}_{{type}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Libp2p Open Streams",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 10,
+        "x": 0,
+        "y": 12
+      },
+      "id": 67,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "waku_connected_peers{instance=\"[[nwaku_instance]]\"}",
+          "legendFormat": "{{instance}}_{{protocol}}_{{direction}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Connected Protocols",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 11,
+        "x": 10,
+        "y": 12
+      },
+      "id": 68,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "waku_streams_peers{instance=\"[[nwaku_instance]]\"}",
+          "legendFormat": "{{instance}}_{{protocol}}_{{direction}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Connected Streams",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 21,
+        "x": 0,
+        "y": 20
+      },
       "id": 31,
       "options": {
         "code": {
@@ -82,7 +388,7 @@
         "h": 7,
         "w": 7,
         "x": 0,
-        "y": 2
+        "y": 22
       },
       "id": 4,
       "options": {
@@ -147,7 +453,7 @@
         "h": 7,
         "w": 7,
         "x": 7,
-        "y": 2
+        "y": 22
       },
       "id": 28,
       "options": {
@@ -212,7 +518,7 @@
         "h": 7,
         "w": 7,
         "x": 14,
-        "y": 2
+        "y": 22
       },
       "id": 29,
       "options": {
@@ -277,7 +583,7 @@
         "h": 7,
         "w": 7,
         "x": 0,
-        "y": 9
+        "y": 29
       },
       "id": 22,
       "options": {
@@ -354,7 +660,7 @@
         "h": 7,
         "w": 7,
         "x": 7,
-        "y": 9
+        "y": 29
       },
       "id": 38,
       "options": {
@@ -420,7 +726,7 @@
         "h": 7,
         "w": 7,
         "x": 14,
-        "y": 9
+        "y": 29
       },
       "id": 43,
       "options": {
@@ -516,7 +822,7 @@
         "h": 9,
         "w": 11,
         "x": 0,
-        "y": 16
+        "y": 36
       },
       "id": 34,
       "options": {
@@ -609,7 +915,7 @@
         "h": 9,
         "w": 10,
         "x": 11,
-        "y": 16
+        "y": 36
       },
       "id": 35,
       "options": {
@@ -702,7 +1008,7 @@
         "h": 8,
         "w": 11,
         "x": 0,
-        "y": 25
+        "y": 45
       },
       "id": 46,
       "options": {
@@ -828,7 +1134,7 @@
         "h": 8,
         "w": 10,
         "x": 11,
-        "y": 25
+        "y": 45
       },
       "id": 45,
       "options": {
@@ -953,7 +1259,191 @@
         "h": 8,
         "w": 11,
         "x": 0,
-        "y": 33
+        "y": 53
+      },
+      "id": 63,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "waku_histogram_message_size_sum/waku_histogram_message_size_count",
+          "legendFormat": "{{instance}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Average msg size (kBytes)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 10,
+        "x": 11,
+        "y": 53
+      },
+      "id": 12,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "(increase(waku_node_messages_total[1m]))/60",
+          "legendFormat": "{{instance}}_{{type}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Messages/second",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 11,
+        "x": 0,
+        "y": 61
       },
       "id": 40,
       "options": {
@@ -1045,191 +1535,7 @@
         "h": 8,
         "w": 10,
         "x": 11,
-        "y": 33
-      },
-      "id": 12,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "editorMode": "code",
-          "expr": "(increase(waku_node_messages_total[1m]))",
-          "legendFormat": "{{instance}}_{{type}}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Messages/minute",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 11,
-        "x": 0,
-        "y": 41
-      },
-      "id": 52,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "editorMode": "code",
-          "expr": "waku_peer_store_size",
-          "legendFormat": "{{instance}}_{{__name__}}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Peer Store Size",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 10,
-        "x": 11,
-        "y": 41
+        "y": 61
       },
       "id": 53,
       "options": {
@@ -1321,9 +1627,9 @@
         "h": 8,
         "w": 11,
         "x": 0,
-        "y": 49
+        "y": 69
       },
-      "id": 54,
+      "id": 52,
       "options": {
         "legend": {
           "calcs": [],
@@ -1343,13 +1649,13 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "(increase(libp2p_gossipsub_failed_publish_total[1m]))",
-          "legendFormat": "{{instance}}",
+          "expr": "waku_peer_store_size",
+          "legendFormat": "{{instance}}_{{__name__}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Failed Pubsub Messages/Minute",
+      "title": "Peer Store Size",
       "type": "timeseries"
     },
     {
@@ -1413,7 +1719,7 @@
         "h": 8,
         "w": 10,
         "x": 11,
-        "y": 49
+        "y": 69
       },
       "id": 56,
       "options": {
@@ -1505,9 +1811,9 @@
         "h": 8,
         "w": 11,
         "x": 0,
-        "y": 57
+        "y": 77
       },
-      "id": 58,
+      "id": 54,
       "options": {
         "legend": {
           "calcs": [],
@@ -1527,13 +1833,13 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "libp2p_gossipsub_low_peers_topics",
+          "expr": "(increase(libp2p_gossipsub_failed_publish_total[1m]))",
           "legendFormat": "{{instance}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "GossipSub Low Peers Topic",
+      "title": "Failed Pubsub Messages/Minute",
       "type": "timeseries"
     },
     {
@@ -1597,7 +1903,7 @@
         "h": 8,
         "w": 10,
         "x": 11,
-        "y": 57
+        "y": 77
       },
       "id": 55,
       "options": {
@@ -1689,9 +1995,9 @@
         "h": 8,
         "w": 11,
         "x": 0,
-        "y": 65
+        "y": 85
       },
-      "id": 57,
+      "id": 58,
       "options": {
         "legend": {
           "calcs": [],
@@ -1711,13 +2017,13 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "(increase(libp2p_gossipsub_received_total[1m]))",
+          "expr": "libp2p_gossipsub_low_peers_topics",
           "legendFormat": "{{instance}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "GossipSub Total Received/Minute",
+      "title": "GossipSub Low Peers Topic",
       "type": "timeseries"
     },
     {
@@ -1781,7 +2087,7 @@
         "h": 8,
         "w": 10,
         "x": 11,
-        "y": 65
+        "y": 85
       },
       "id": 24,
       "options": {
@@ -1873,9 +2179,9 @@
         "h": 8,
         "w": 11,
         "x": 0,
-        "y": 73
+        "y": 93
       },
-      "id": 16,
+      "id": 57,
       "options": {
         "legend": {
           "calcs": [],
@@ -1895,37 +2201,13 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "libp2p_total_dial_attempts_total{}",
-          "legendFormat": "{{instance}}__attempts",
+          "expr": "(increase(libp2p_gossipsub_received_total[1m]))",
+          "legendFormat": "{{instance}}",
           "range": true,
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "editorMode": "code",
-          "expr": "libp2p_failed_dials_total{}",
-          "hide": false,
-          "legendFormat": "{{instance}}__failed",
-          "range": true,
-          "refId": "B"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "editorMode": "code",
-          "expr": "libp2p_successful_dials_total{}",
-          "hide": false,
-          "legendFormat": "{{instance}}__success",
-          "range": true,
-          "refId": "C"
         }
       ],
-      "title": "LibP2P Dials",
+      "title": "GossipSub Total Received/Minute",
       "type": "timeseries"
     },
     {
@@ -1990,7 +2272,7 @@
         "h": 8,
         "w": 10,
         "x": 11,
-        "y": 73
+        "y": 93
       },
       "id": 59,
       "options": {
@@ -2074,8 +2356,7 @@
                 "value": 80
               }
             ]
-          },
-          "unit": "decbytes"
+          }
         },
         "overrides": []
       },
@@ -2083,9 +2364,9 @@
         "h": 8,
         "w": 11,
         "x": 0,
-        "y": 81
+        "y": 101
       },
-      "id": 42,
+      "id": 16,
       "options": {
         "legend": {
           "calcs": [],
@@ -2105,13 +2386,37 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "nim_gc_mem_bytes{}",
-          "legendFormat": "{{instance}}_{{__name__}}",
+          "expr": "libp2p_total_dial_attempts_total{}",
+          "legendFormat": "{{instance}}__attempts",
           "range": true,
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "libp2p_failed_dials_total{}",
+          "hide": false,
+          "legendFormat": "{{instance}}__failed",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "libp2p_successful_dials_total{}",
+          "hide": false,
+          "legendFormat": "{{instance}}__success",
+          "range": true,
+          "refId": "C"
         }
       ],
-      "title": "Nim Total Memory",
+      "title": "LibP2P Dials",
       "type": "timeseries"
     },
     {
@@ -2176,7 +2481,7 @@
         "h": 8,
         "w": 10,
         "x": 11,
-        "y": 81
+        "y": 101
       },
       "id": 48,
       "options": {
@@ -2293,6 +2598,180 @@
                 "value": 80
               }
             ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 11,
+        "x": 0,
+        "y": 109
+      },
+      "id": 42,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "nim_gc_mem_bytes{}",
+          "legendFormat": "{{instance}}_{{__name__}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Nim Total Memory",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 10,
+        "x": 11,
+        "y": 109
+      },
+      "id": 2,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "waku_version",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Version",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "version"
+              ]
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
           }
         },
         "overrides": []
@@ -2301,7 +2780,7 @@
         "h": 8,
         "w": 11,
         "x": 0,
-        "y": 89
+        "y": 117
       },
       "id": 50,
       "options": {
@@ -2364,87 +2843,6 @@
         }
       ],
       "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "displayMode": "auto",
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 10,
-        "x": 11,
-        "y": 89
-      },
-      "id": 2,
-      "options": {
-        "footer": {
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true
-      },
-      "pluginVersion": "9.3.6",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "waku_version",
-          "format": "table",
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "A"
-        }
-      ],
-      "title": "Version",
-      "transformations": [
-        {
-          "id": "filterFieldsByName",
-          "options": {
-            "include": {
-              "names": [
-                "version"
-              ]
-            }
-          }
-        }
-      ],
-      "type": "table"
     }
   ],
   "refresh": "10s",
@@ -2456,8 +2854,8 @@
       {
         "current": {
           "selected": true,
-          "text": "nwaku-4:8008",
-          "value": "nwaku-4:8008"
+          "text": "nwaku-simulator_nwaku_12:8008",
+          "value": "nwaku-simulator_nwaku_12:8008"
         },
         "datasource": {
           "type": "prometheus",

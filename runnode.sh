@@ -58,7 +58,40 @@ else
 
   echo "Using bootstrap node: ${BOOTSTRAP_ENR}"
 
-  exec /usr/bin/wakunode\
+  if [ -n "${ENABLE_WEBSOCKETS}" ]; then
+    echo "Enabling websockets"
+    exec usr/bin/wakunode\
+        --relay=true\
+        --store=true\
+        --filter=true\
+        --lightpush=true\
+        --rln-relay=true\
+        --peer-exchange=true\
+        --rpc-admin=true\
+        --peer-persistence=false\
+        --keep-alive=true\
+        --max-connections=150\
+        --topics="/waku/2/default-waku/proto /waku/2/dev-waku/proto"\
+        --store-message-db-url=sqlite:///data/store.sqlite3\
+        --store-message-retention-policy=time:2592000\
+        --websocket-port=8000\
+        --websocket-secure-support=true\
+        --websocket-secure-key-path=/opt/waku/key.pem\
+        --websocket-secure-cert-path=/opt/waku/cert.pem\
+        --discv5-discovery=true\
+        --discv5-udp-port=9000\
+        --discv5-enr-auto-update=True\
+        --discv5-bootstrap-node=${BOOTSTRAP_ENR}\
+        --nat=extip:${IP}\
+        --log-level=DEBUG\
+        --rpc-port=8545\
+        --rpc-address=0.0.0.0\
+        --tcp-port=30303\
+        --metrics-server=True\
+        --metrics-server-address=0.0.0.0\
+        --dns-discovery=true
+  else
+    exec /usr/bin/wakunode\
         --relay=true\
         --rpc-admin=true\
         --keep-alive=true\
@@ -72,4 +105,5 @@ else
         --metrics-server-address=0.0.0.0\
         --discv5-bootstrap-node=${BOOTSTRAP_ENR}\
         --nat=extip:${IP}
+  fi
 fi

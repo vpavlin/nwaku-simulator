@@ -1,11 +1,16 @@
 version: "3.7"
 
 services:
+
   websockets:
     restart: on-failure
     deploy:
-      replicas: 80
+      replicas: 50
     image: quay.io/vpavlin0/waku-websockets:latest
     volumes:
       - ./.env.example:/opt/websockets/.env:z
     
+networks:
+  default:
+    name: nwaku-simulator_default
+    external: true

@@ -19,17 +19,17 @@ services:
     environment:
       BOOTSTRAP_NODE: "true"
 
-  traffic:
-    image: "waku-publisher:latest"
-    build:
-      context: ../waku-publisher
-      dockerfile: Dockerfile
-    entrypoint: sh
-      - 'opt/runnode.sh'
-    volumes:
-      - ./runnode.sh:/opt/runnode.sh:Z
-    environment:
-      TRAFFIC_GENERATOR: "true"
+  #traffic:
+  #  image: "waku-publisher:latest"
+  #  build:
+  #    context: ../waku-publisher
+  #    dockerfile: Dockerfile
+  #  entrypoint: sh
+  #    - 'opt/runnode.sh'
+  #  volumes:
+  #    - ./runnode.sh:/opt/runnode.sh:Z
+  #  environment:
+  #    TRAFFIC_GENERATOR: "true"
 
   prometheus:
     image: prom/prometheus:latest
@@ -90,5 +90,9 @@ services:
       - '/opt/runnode.sh'
     volumes:
       - ./runnode.sh:/opt/runnode.sh:Z
+      - ./key.pem:/opt/waku/key.pem:Z
+      - ./cert.pem:/opt/waku/cert.pem:Z
+    environment:
+      ENABLE_WEBSOCKETS: ${ENABLE_WEBSOCKETS}
     depends_on:
       - bootstrap

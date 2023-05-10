@@ -84,7 +84,7 @@ services:
     image: ${NWAKU_IMAGE}
     restart: on-failure
     deploy:
-      replicas: 25
+      replicas: 3
     entrypoint: sh
     command:
       - '/opt/runnode.sh'
@@ -94,5 +94,6 @@ services:
       - ./cert.pem:/opt/waku/cert.pem:Z
     environment:
       ENABLE_WEBSOCKETS: ${ENABLE_WEBSOCKETS}
+      ENABLE_HEAPTRACK: ${ENABLE_HEAPTRACK}
     depends_on:
       - bootstrap

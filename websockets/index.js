@@ -1,4 +1,4 @@
-import { createLightNode } from '@waku/create';
+import { createFullNode, createLightNode, createRelayNode,  } from '@waku/create';
 import { waitForRemotePeer, createEncoder, createDecoder } from '@waku/core';
 import { multiaddr } from '@multiformats/multiaddr';
 import { config } from 'dotenv';
@@ -16,19 +16,24 @@ if (process.env.MULTIADDRESS) {
     address = process.env.MULTIADDRESS
 }
 
-console.log(`Using ${address} to connect to`)
-
-const node = await createLightNode();
-
-await node.start();
-
-const ma = multiaddr(address);
-
 let plugin_name = 'lightpush'
 if (process.env.PLUGIN) plugin_name = process.env.PLUGIN
 
 const plugin = await import(`./modules/${plugin_name}.js`);
 console.log(plugin.protocols)
+
+console.log(`Using ${address} to connect to`)
+
+let node = undefined
+
+if (plugin.protocols.includes("relay")) {
+    node = await createFullNode({ defaultBootstrap: true });
+} else {
+    node = await createLightNode();
+}
+
+await node.start();
+const ma = multiaddr(address);
 
 await node.dial(ma, plugin.protocols);
 await waitForRemotePeer(node, plugin.protocols);

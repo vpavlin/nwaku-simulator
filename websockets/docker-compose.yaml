@@ -5,7 +5,7 @@ services:
   websockets:
     restart: on-failure
     deploy:
-      replicas: 50
+      replicas: 5
     image: quay.io/vpavlin0/waku-websockets:latest
     volumes:
       - ./.env.example:/opt/websockets/.env:z

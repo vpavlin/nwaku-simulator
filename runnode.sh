@@ -3,7 +3,7 @@
 IP=$(ip a | grep "inet " | grep -Fv 127.0.0.1 | sed 's/.*inet \([^/]*\).*/\1/')
 
 if [ -n "${TRAFFIC_GENERATOR}" ]; then
-  echo "I am the traffic generator"
+  echo "=> I am the traffic generator"
   RETRIES_TRAFFIC=${RETRIES_TRAFFIC:=10}
 
   while [ -z "${NODE_ENR}" ] && [ ${RETRIES_TRAFFIC} -ge 0 ]; do
@@ -23,7 +23,7 @@ if [ -n "${TRAFFIC_GENERATOR}" ]; then
 fi
 
 if [ -n "${BOOTSTRAP_NODE}" ]; then
-  echo "I am a bootstrap node"
+  echo "=> I am a bootstrap node"
 
   exec /usr/bin/wakunode\
       --relay=true\
@@ -40,7 +40,7 @@ if [ -n "${BOOTSTRAP_NODE}" ]; then
       --nodekey=30348dd51465150e04a5d9d932c72864c8967f806cce60b5d26afeca1e77eb68\
       --nat=extip:${IP}
 else
-  echo "I am an ordinary nwaku node"
+  echo "=> I am an ordinary nwaku node"
 
   RETRIES=${RETRIES:=10}
 
@@ -56,11 +56,18 @@ else
      exit 1
   fi
 
-  echo "Using bootstrap node: ${BOOTSTRAP_ENR}"
+  echo "=> Using bootstrap node: ${BOOTSTRAP_ENR}"
+
+  BINARY=usr/bin/wakunode
+
+  if [ -n "${ENABLE_HEAPTRACK}" ]; then
+    echo "=> Using heaptrack"
+    BINARY="/heaptrack/build/bin/heaptrack ${BINARY}"
+  fi
 
   if [ -n "${ENABLE_WEBSOCKETS}" ]; then
-    echo "Enabling websockets"
-    exec usr/bin/wakunode\
+    echo "=> Enabling websockets"
+    exec ${BINARY}\
         --relay=true\
         --store=true\
         --filter=true\
@@ -91,7 +98,7 @@ else
         --metrics-server-address=0.0.0.0\
         --dns-discovery=true
   else
-    exec /usr/bin/wakunode\
+    exec ${BINARY}\
         --relay=true\
         --rpc-admin=true\
         --keep-alive=true\
